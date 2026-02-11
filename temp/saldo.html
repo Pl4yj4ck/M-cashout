@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Saldo</title>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* HEADER */
+    .header-top {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      margin-top: 30px;
+      margin-bottom: 30px;
+    }
+
+    .titol {
+      font-size: 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1.5px;
+    }
+
+    .back {
+      position: absolute;
+      left: 19%;
+      width: 20px;
+      cursor: pointer;
+    }
+
+    /* CONTENITORE GRAFICO */
+    .chart-container {
+      width: 100%;
+      height: calc(100vh - 120px);
+      padding: 0 20px;
+    }
+
+    canvas {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header-top">
+    <img class="back" src="../img/back0.svg" onclick="history.back()">
+    <div class="titol">SALDO</div>
+  </div>
+
+  <div class="chart-container">
+    <canvas id="saldoChart"></canvas>
+  </div>
+
+  <script>
+    const saldi = JSON.parse(localStorage.getItem("saldi"));
+
+    if (!saldi || Object.keys(saldi).length === 0) {
+      alert("Nessun dato trovato. Torna alle impostazioni partita.");
+      history.back();
+    }
+
+    function wrapLabels(labels, maxCharsPerLine = 10) {
+      return labels.map(label => {
+        const words = label.split(" ");
+        const lines = [];
+        let currentLine = "";
+
+        words.forEach(word => {
+          if ((currentLine + " " + word).trim().length <= maxCharsPerLine) {
+            currentLine = (currentLine + " " + word).trim();
+          } else {
+            if (currentLine) lines.push(currentLine);
+            currentLine = word;
+          }
+        });
+
+        if (currentLine) lines.push(currentLine);
+        return lines;
+      });
+    }
+
+    const labels = wrapLabels(Object.keys(saldi), 10);
+    const values = Object.values(saldi);
+
+    const ctx = document.getElementById("saldoChart");
+
+    new Chart(ctx, {
+      type: "bar",
+      data: {
+        labels: labels,
+        datasets: [{
+          data: values,
+          backgroundColor: [
+            "#b36bff", "#ffff66", "#66cbe8", "#7ed957",
+            "#ff4d4d", "#ff9933", "#66ff66", "#66b3ff",
+            "#ff66b3", "#c2c2f0", "#ffb366", "#99ff99",
+            "#ff6666", "#66cccc"
+          ]
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+
+        /* 🔥 FIX DEFINITIVO TOOLTIP */
+        interaction: {
+          mode: "nearest",
+          intersect: true
+        },
+
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            mode: "nearest",
+            intersect: true,
+            callbacks: {
+              label: ctx => "M" + ctx.raw
+            }
+          }
+        },
+
+        scales: {
+          x: {
+            grid: { display: false }
+          },
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: v => "M" + v
+            }
+          }
+        }
+      }
+    });
+  </script>
+
+</body>
+</html>

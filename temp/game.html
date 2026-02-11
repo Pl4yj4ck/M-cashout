@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Game</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    /* TESTO */
+    .text { 
+      font-size: 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -1.5px;
+      text-align: center;
+    }
+
+    /* CONTAINER */
+    .game-2-0 {
+      width: 720px;
+      height: 420px;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    /* AREA SUPERIORE */
+    .top-area {
+      display: flex;
+      gap: 40px;
+      flex: 1;
+    }
+
+    /* RETTANGOLI */
+    .paga, .box {
+      background: #eeeeee;
+      border-radius: 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      gap: 18px;
+    }
+
+    .paga {
+      flex: 1;
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
+
+    .box {
+      flex: 1;
+    }
+
+    /* IMMAGINI */
+    .icon {
+      width: 72px;
+      height: 72px;
+      object-fit: contain;
+    }
+
+    /* LEAVE GAME */
+    .leave-game {
+      height: 55px;
+      background: #b01616;
+      color: white;
+      border-radius: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+    }
+
+    .leave-icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: #ffffff;
+      padding: 30px;
+      width: 400px;
+      border-radius: 16px;
+      text-align: center;
+    }
+
+    .modal-content h2 {
+      margin-bottom: 15px;
+    }
+
+    .modal-content p {
+      margin-bottom: 25px;
+      color: #444;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 20px;
+    }
+
+    .btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-align: center;
+    }
+
+    .btn-cancel {
+      background: #cccccc;
+    }
+
+    .btn-confirm {
+      background: #b01616;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="game-2-0">
+
+    <div class="top-area">
+
+      <!-- PAGA -->
+      <div class="paga" onclick="goToPage('paga.html')">
+        <img class="icon" src="../img/paga.png" alt="Paga" style="width: 200px; height: auto;">
+        <div class="text">PAGA</div>
+      </div>
+
+      <!-- RICARICA + SALDO -->
+      <div class="right">
+
+        <div class="box" onclick="goToPage('ricarica.html')">
+          <img class="icon" src="../img/ricarica.png" alt="Ricarica">
+          <div class="text">RICARICA</div>
+        </div>
+
+        <div class="box" onclick="goToPage('saldo.html')">
+          <div class="text">SALDO</div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- LEAVE GAME -->
+    <div class="leave-game" onclick="openModal()">
+      <img class="leave-icon" src="../img/esc.png" alt="Leave">
+      <div class="text">ESCI</div>
+      
+    </div>
+
+  </div>
+
+  <!-- MODAL -->
+  <div class="modal" id="leaveModal">
+    <div class="modal-content">
+      <h2>Uscire dal gioco?</h2>
+      <p>
+        Se esci ora perderai tutti i dati non salvati.<br>
+        Vuoi continuare?
+      </p>
+
+      <div class="modal-buttons">
+        <div class="btn btn-cancel" onclick="closeModal()">Annulla</div>
+        <div class="btn btn-confirm" onclick="leaveGame()">Esci</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function goToPage(page) {
+      window.location.href = page;
+    }
+
+    function openModal() {
+      document.getElementById("leaveModal").style.display = "flex";
+    }
+
+    function closeModal() {
+      document.getElementById("leaveModal").style.display = "none";
+    }
+
+    function leaveGame() {
+      window.location.href = "index.html";
+    }
+  </script>
+
+</body>
+</html>

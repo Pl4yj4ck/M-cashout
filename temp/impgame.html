@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impostazioni Partita</title>
+
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .imp-partita {
+      width: 100%;
+      max-width: 800px;
+      min-height: 100vh;
+      padding: 20px;
+      padding-bottom: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* HEADER */
+    .header-top {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      margin: 10px 0 40px;
+    }
+
+    .back {
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 20px;
+      cursor: pointer;
+    }
+
+    .titol {
+      font-size: 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    /* TESTI */
+    .selezionare-il-numero-di-giocatori,
+    .scegliere-i-personaggi {
+      width: 100%;
+      font-size: 13px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    /* CONTATORE */
+    .counter-row {
+      display: flex;
+      align-items: center;
+      gap: 50px;
+      margin-bottom: 50px;
+    }
+
+    .less, .add {
+      font-size: 45px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .rectangle-5 {
+      background: #ededed;
+      width: 220px;
+      height: 110px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 20px;
+      font-size: 70px;
+    }
+
+    /* PEDINE */
+    .pedine {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 15px;
+      width: 100%;
+    }
+
+    .card {
+      background: #ededed;
+      border-radius: 15px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 15px;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .card.selected {
+      border: 1px solid #000;
+      background: #dcdcdc;
+    }
+
+    .card img {
+      height: 45px;
+    }
+
+    .card span {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      text-align: right;
+      flex: 1;
+    }
+
+    /* FOOTER */
+    .footer-container {
+      position: fixed;
+      bottom: 20px;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .gioca2 {
+      background: #7c837c;
+      color: white;
+      width: 320px;
+      padding: 18px 0;
+      border-radius: 25px;
+      font-size: 26px;
+      font-weight: bold;
+      text-transform: uppercase;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    /* MODAL */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-box {
+      background: white;
+      padding: 25px 30px;
+      border-radius: 20px;
+      width: 280px;
+      text-align: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    }
+
+    .modal-box p {
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .modal-box button {
+      background: #7c837c;
+      color: white;
+      border: none;
+      padding: 10px 30px;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="imp-partita">
+
+  <div class="header-top">
+    <img class="back" src="../img/back0.svg" onclick="history.back()">
+    <div class="titol">IMPOSTAZIONI DELLA PARTITA</div>
+  </div>
+
+  <div class="selezionare-il-numero-di-giocatori">
+    SELEZIONARE IL NUMERO DI GIOCATORI
+  </div>
+
+  <div class="counter-row">
+    <div class="less" onclick="updatePlayers(-1)">-</div>
+    <div class="rectangle-5"><div id="num">5</div></div>
+    <div class="add" onclick="updatePlayers(1)">+</div>
+  </div>
+
+  <div class="scegliere-i-personaggi">SCEGLIERE LE PEDINE</div>
+
+  <div class="pedine">
+    <div class="card" data-name="MACCHINA"><img src="../img/livello-8-10.png"><span>MACCHINA</span></div>
+    <div class="card" data-name="CARRIOLA"><img src="../img/livello-2-10.png"><span>CARRIOLA</span></div>
+    <div class="card" data-name="DITALE"><img src="../img/livello-1-10.png"><span>DITALE</span></div>
+    <div class="card" data-name="SCARPA"><img src="../img/livello-3-10.png"><span>SCARPA</span></div>
+    <div class="card" data-name="NAVE"><img src="../img/livello-5-10.png"><span>NAVE</span></div>
+    <div class="card" data-name="CANE"><img src="../img/livello-4-10.png"><span>CANE</span></div>
+    <div class="card" data-name="CAPPELLO"><img src="../img/livello-6-10.png"><span>CAPPELLO</span></div>
+    <div class="card" data-name="PINGUINO"><img src="../img/livello-11-10.png"><span>PINGUINO</span></div>
+    <div class="card" data-name="DINOSAURO"><img src="../img/livello-9-10.png"><span>DINOSAURO</span></div>
+    <div class="card" data-name="GATTO"><img src="../img/livello-13-10.png"><span>GATTO</span></div>
+    <div class="card" data-name="CHITARRA"><img src="../img/livello-14-10.png"><span>CHITARRA</span></div>
+    <div class="card" data-name="FERRO DA STIRO"><img src="../img/livello-7-10.png"><span>FERRO DA STIRO</span></div>
+    <div class="card" data-name="ELICOTTERO"><img src="../img/livello-12-10.png"><span>ELICOTTERO</span></div>
+    <div class="card" data-name="PAPERA"><img src="../img/livello-10-10.png"><span>PAPERA</span></div>
+  </div>
+
+</div>
+
+<div class="footer-container">
+  <div class="gioca2">GIOCA</div>
+</div>
+
+<!-- MODAL -->
+<div id="modal" class="modal hidden">
+  <div class="modal-box">
+    <p id="modal-text"></p>
+    <button onclick="closeModal()">OK</button>
+  </div>
+</div>
+
+<script>
+  let selectedTokens = [];
+
+  function updatePlayers(val) {
+    const n = document.getElementById("num");
+    let count = parseInt(n.innerText);
+
+    if (count + val >= 2 && count + val <= 14) {
+      n.innerText = count + val;
+
+      while (selectedTokens.length > count + val) {
+        const removed = selectedTokens.pop();
+        document.querySelector(`.card[data-name="${removed}"]`)
+          .classList.remove("selected");
+      }
+    }
+  }
+
+  document.querySelectorAll(".card").forEach(card => {
+    card.addEventListener("click", () => {
+      const name = card.dataset.name;
+      const players = parseInt(document.getElementById("num").innerText);
+
+      if (card.classList.contains("selected")) {
+        card.classList.remove("selected");
+        selectedTokens = selectedTokens.filter(t => t !== name);
+      } else {
+        if (selectedTokens.length >= players) {
+          showModal("Numero massimo di pedine raggiunto");
+          return;
+        }
+        card.classList.add("selected");
+        selectedTokens.push(name);
+      }
+    });
+  });
+
+  function showModal(text) {
+    document.getElementById("modal-text").innerText = text;
+    document.getElementById("modal").classList.remove("hidden");
+  }
+
+  function closeModal() {
+    document.getElementById("modal").classList.add("hidden");
+  }
+
+  document.querySelector(".gioca2").addEventListener("click", () => {
+    const players = parseInt(document.getElementById("num").innerText);
+
+    if (selectedTokens.length !== players) {
+      showModal("Il numero di pedine selezionate deve corrispondere al numero di giocatori");
+      return;
+    }
+
+    localStorage.removeItem("saldi");
+
+    const datiSaldi = {};
+    selectedTokens.forEach(p => datiSaldi[p] = 1500);
+
+    localStorage.setItem("saldi", JSON.stringify(datiSaldi));
+    window.location.href = "game.html";
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* RESET */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+/* CENTRATURA + SCALE */
+html, body {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #ffffff;
+    overflow: hidden;
+    font-family: sans-serif;
+}
+
+/* CANVAS FISSO */
+.home {
+    position: relative;
+    width: 1024px;
+    height: 768px;
+    transform-origin: center center;
+}
+
+/* LOGO */
+.header {
+    height: 140px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.header img {
+    height: 200px; /* più grande */
+    width: auto;
+}
+
+/* AREA CONTENUTO */
+.content {
+    padding: 0 10px;
+}
+
+.container {
+    display: flex;
+    gap: 40px;
+}
+
+/* BOX */
+.box {
+    background: #f0f0f0;
+    border-radius: 20px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: none;
+    color: inherit;
+}
+
+.big {
+    flex: 3;
+    height: 360px;
+}
+
+.right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+}
+
+.medium {
+    height: 200px;
+}
+
+.small {
+    height: 120px;
+}
+
+/* TESTO */
+.title {
+    font-size: 50px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1.5px;
+    text-align: center;
+}
+
+.title2 {
+    font-size: 40px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -1.5px;
+    text-align: center;
+}
+
+/* IMMAGINI */
+.box-image1 {
+    position: absolute;
+    bottom: 45%;
+    right: 65%;
+    width: 130px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+    z-index: 1
+}
+
+.box-image2 {
+    position: absolute;
+    top: 10%;
+    right: 16px;
+    width: 90px;
+    height: auto;
+    object-fit: cover;
+    border-radius: 6px;
+    z-index: 1
+}
+
+.content {
+    padding: 10px 0px 0 0px; /* 80px di spazio sopra, 0 sotto, 180px sx/dx */
+}
+
+</style>
+<title>Home</title>
+<link rel="icon" href="img\icon_favicon.png" type="image/x-icon">
+</head>
+
+<body>
+
+<div class="home" id="main-container">
+
+    <!-- SPAZIO VUOTO -->
+    <div class="content">
+        <div class="container" style="color: #ffffff;">
+                .
+        </div>
+    </div>
+
+    <!-- LOGO -->
+    <div class="header">
+        <img src="../img/m-cash-out-logo-10.png" alt="Logo">
+    </div>
+
+    <!-- CONTENUTO -->
+    <div class="content">
+        <div class="container">
+
+            <a href="impgame.html" class="box big">
+                <div class="title" style="z-index: 2">GIOCA</div>
+                <img src="../img/soldi-free-10.png" class="box-image1">
+            </a>
+
+            <div class="right">
+                <a href="sviluppo.html" class="box medium">
+                    <div class="title2" style="z-index: 2">PARTITE</div>
+                    <img src="../img/casa-10.png" class="box-image2">
+                </a>
+
+                <a href="impostazioni.html" class="box small">
+                    <div class="title2">IMPOSTAZIONI</div>
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+function layoutResize() {
+    const container = document.getElementById('main-container');
+    const scale = Math.min(
+        window.innerWidth / 1024,
+        window.innerHeight / 768
+    );
+    container.style.transform = `scale(${scale})`;
+}
+
+window.addEventListener('resize', layoutResize);
+layoutResize();
+</script>
+
+</body>
+</html>

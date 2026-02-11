@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Impostazioni</title>
+
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    html,
+    body {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      background-color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .imp-page {
+      width: 100%;
+      max-width: 600px;
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* HEADER */
+    .header-top {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      position: relative;
+      margin: 20px 0 40px;
+    }
+
+    .titol {
+      font-size: 32px;
+      font-weight: 900;
+      text-transform: uppercase;
+    }
+
+    /* TASTO INDIETRO */
+    .back-btn {
+      position: absolute;
+      left: 0;
+      top: 13px;
+      width: 20px;
+      cursor: pointer;
+    }
+
+    /* SEZIONE */
+    .section {
+      width: 100%;
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .section-text {
+      font-size: 14px;
+      color: #555;
+      margin-bottom: 15px;
+      line-height: 1.5;
+      text-align: justify;
+      /* testo giustificato */
+    }
+
+
+    .extra-text {
+      font-size: 13px;
+      color: #777;
+      margin-top: 12px;
+      line-height: 1.4;
+      text-align: center;
+      /* testo centrato */
+    }
+
+    /* PULSANTE GITHUB */
+    .github-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: #24292e;
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      width: 50%;
+      margin: 0 auto;
+    }
+
+    .github-btn:hover {
+      background-color: #444;
+    }
+
+    .github-btn img {
+      width: 20px;
+      height: 20px;
+    }
+
+    /* CARD STILE IMPOSTAZIONI */
+    .card {
+      background: #f3f3f3;
+      padding: 15px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="imp-page">
+    <div class="header-top">
+      <img class="back-btn" src="../img/back0.svg" onclick="history.back()">
+      <div class="titol">IMPOSTAZIONI</div>
+    </div>
+
+    <!-- SEZIONE SUPPORTO PROGETTO -->
+    <div class="section">
+      <div class="section-title">Supporta il progetto</div>
+
+      <div class="card">
+        <p class="section-text">
+          Questa applicazione è open source. Se vuoi contribuire con miglioramenti,
+          segnalare bug o proporre nuove funzionalità, visita la repository GitHub.
+        </p>
+
+        <a href="https://github.com/Pl4yj4ck/M-cashout?tab=readme-ov-file" target="_blank" class="github-btn">
+          <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/github-white-icon.png"
+            alt="GitHub Logo">
+          Apri la repository
+        </a>
+
+        <p class="extra-text">
+          Puoi fare una pull request, aprire una issue o semplicemente lasciare una ⭐
+          per supportare il progetto.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

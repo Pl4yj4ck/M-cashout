@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RICARICA</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #ffffff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .frame {
+      width: 430px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .back {
+      position: absolute;
+      left: 24px;
+      top: 32px;
+      width: 20px;
+      cursor: pointer;
+    }
+
+    .header {
+      display: flex;
+      justify-content: center;
+      font-size: 26px;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .amount-box {
+      display: flex;
+      justify-content: space-between;
+      background: #e9e9e9;
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin-bottom: 28px;
+      align-items: center;
+    }
+
+    .amount {
+      font-size: 40px;
+    }
+
+    .icon-btn {
+      font-size: 26px;
+      cursor: pointer;
+      user-select: none;
+      align-items: center;
+    }
+
+    .checkout-title {
+      font-size: 14px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .checkout-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .checkout-row span {
+      width: 30px;
+      font-size: 12px;
+      text-transform: uppercase;
+    }
+
+    select, .readonly, input {
+      flex: 1;
+      background: #e9e9e9;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 14px;
+      text-transform: uppercase;
+      border: none;
+      outline: none;
+    }
+
+    select {
+      padding-right: 36px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23000' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+    }
+
+    .clickable {
+      cursor: pointer;
+    }
+
+    .pay-btn {
+      margin-top: 28px;
+      width: 100%;
+      padding: 14px;
+      background: #7c827a;
+      color: white;
+      font-size: 20px;
+      font-weight: bold;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+    }
+
+    .pay-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* ALERT */
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.4);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal.hidden {
+      display: none;
+    }
+
+    .modal-box {
+      background: white;
+      padding: 24px 28px;
+      border-radius: 20px;
+      width: 280px;
+      text-align: center;
+    }
+
+    .modal-box p {
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .modal-box button {
+      background: #7c827a;
+      color: white;
+      border: none;
+      padding: 10px 36px;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="frame">
+  <img class="back" src="../img/back0.svg" onclick="history.back()">
+
+  <div class="header">RICARICA</div>
+
+  <div class="checkout-title">SELEZIONARE L’IMPORTO</div>
+
+  <div class="amount-box">
+    <div class="icon-btn" onclick="decrease()">−</div>
+    <div class="amount" id="amount">M200</div>
+    <div class="icon-btn" onclick="increase()">+</div>
+  </div>
+
+  <div class="checkout-title">CHECKOUT</div>
+
+  <div class="checkout-row">
+    <span>DA:</span>
+    <div class="readonly">BANCA</div>
+  </div>
+
+  <div class="checkout-row">
+    <span>A:</span>
+    <select id="to">
+      <option value="">-SELEZIONARE CHI RICEVE-</option>
+    </select>
+  </div>
+
+  <div class="checkout-row">
+    <span>DI:</span>
+
+    <div id="diDisplay" class="readonly clickable" onclick="editAmount()">M200</div>
+
+    <input
+      id="diInput"
+      type="number"
+      min="10"
+      step="10"
+      hidden
+      onblur="confirmAmount()"
+      onkeydown="handleEnter(event)"
+    >
+  </div>
+
+  <button class="pay-btn" onclick="pay()">RICARICA</button>
+</div>
+
+<!-- ALERT -->
+<div id="customAlert" class="modal hidden">
+  <div class="modal-box">
+    <p id="alertText"></p>
+    <button onclick="closeAlert()">OK</button>
+  </div>
+</div>
+
+<script>
+  let value = 200;
+
+  const amountEl = document.getElementById("amount");
+  const diDisplay = document.getElementById("diDisplay");
+  const diInput = document.getElementById("diInput");
+
+  function updateUI() {
+    amountEl.innerText = "M" + value;
+    diDisplay.innerText = "M" + value;
+    diInput.value = value;
+  }
+
+  function increase() {
+    value += 10;
+    updateUI();
+  }
+
+  function decrease() {
+    if (value > 10) {
+      value -= 10;
+      updateUI();
+    }
+  }
+
+  function editAmount() {
+    diDisplay.hidden = true;
+    diInput.hidden = false;
+    diInput.value = value;
+    diInput.focus();
+    diInput.select();
+  }
+
+  function confirmAmount() {
+    let v = parseInt(diInput.value);
+    if (isNaN(v) || v < 10) v = 10;
+
+    value = Math.round(v / 10) * 10;
+    diInput.hidden = true;
+    diDisplay.hidden = false;
+    updateUI();
+  }
+
+  function handleEnter(e) {
+    if (e.key === "Enter") diInput.blur();
+  }
+
+  /* POPOLA SELECT */
+  const saldi = JSON.parse(localStorage.getItem("saldi")) || {};
+  const selectTo = document.getElementById("to");
+
+  Object.keys(saldi).forEach(nome => {
+    const opt = document.createElement("option");
+    opt.value = nome;
+    opt.textContent = nome;
+    selectTo.appendChild(opt);
+  });
+
+  function showAlert(text) {
+    alertText.innerText = text;
+    customAlert.classList.remove("hidden");
+  }
+
+  function closeAlert() {
+    customAlert.classList.add("hidden");
+  }
+
+  function pay() {
+    const destinatario = selectTo.value;
+
+    if (!destinatario) {
+      showAlert("SELEZIONA CHI RICEVE LA RICARICA");
+      return;
+    }
+
+    saldi[destinatario] += value;
+    localStorage.setItem("saldi", JSON.stringify(saldi));
+
+    //showAlert("RICARICA EFFETTUATA");
+
+    setTimeout(() => {
+      window.location.href = "game.html";
+    }, 800);
+  }
+
+  updateUI();
+</script>
+
+</body>
+</html>
