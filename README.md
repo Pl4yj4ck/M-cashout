@@ -32,7 +32,7 @@ Presto sarà possibile:
 
 Per iniziare a usare il tracker, accedi al sito tramite il link:
   
-👉 [**Gioca qui:** ]((https://pl4yj4ck.github.io/M-cashout/temp/index.html)
+👉 [**Gioca qui:** ](https://pl4yj4ck.github.io/M-cashout/temp/index.html)
 
 ---
 
