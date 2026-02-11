@@ -1,4 +1,4 @@
-# 🎲 Monopoly Money Tracker
+# 🎲 M-cashout
 
 ![GitHub stars](https://img.shields.io/github/stars/Pl4yj4ck/M-cashout?style=for-the-badge)
 ![GitHub forks](https://img.shields.io/github/forks/Pl4yj4ck/M-cashout?style=for-the-badge)
