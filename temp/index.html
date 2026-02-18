@@ -30,6 +30,7 @@ html, body {
     width: 1024px;
     height: 768px;
     transform-origin: center center;
+    padding: 60px; /* 👈 Spazio dai bordi */
 }
 
 /* LOGO */
@@ -38,17 +39,16 @@ html, body {
     display: flex;
     justify-content: center;
     align-items: center;
-    
 }
 
 .header img {
-    height: 200px; /* più grande */
+    height: 200px;
     width: auto;
 }
 
 /* AREA CONTENUTO */
 .content {
-    padding: 0 10px;
+    padding-top: 40px;
 }
 
 .container {
@@ -115,7 +115,7 @@ html, body {
     height: auto;
     object-fit: cover;
     border-radius: 6px;
-    z-index: 1
+    z-index: 1;
 }
 
 .box-image2 {
@@ -126,28 +126,18 @@ html, body {
     height: auto;
     object-fit: cover;
     border-radius: 6px;
-    z-index: 1
-}
-
-.content {
-    padding: 10px 0px 0 0px; /* 80px di spazio sopra, 0 sotto, 180px sx/dx */
+    z-index: 1;
 }
 
 </style>
+
 <title>Home</title>
-<link rel="icon" href="img\icon_favicon.png" type="image/x-icon">
+<link rel="icon" href="img/icon_favicon.png" type="image/x-icon">
 </head>
 
 <body>
 
 <div class="home" id="main-container">
-
-    <!-- SPAZIO VUOTO -->
-    <div class="content">
-        <div class="container" style="color: #ffffff;">
-                .
-        </div>
-    </div>
 
     <!-- LOGO -->
     <div class="header">
@@ -164,7 +154,7 @@ html, body {
             </a>
 
             <div class="right">
-                <a href="sviluppo.html" class="box medium">
+                <a href="partite.html" class="box medium">
                     <div class="title2" style="z-index: 2">PARTITE</div>
                     <img src="../img/casa-10.png" class="box-image2">
                 </a>

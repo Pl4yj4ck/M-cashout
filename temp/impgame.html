@@ -235,7 +235,6 @@
   <div class="gioca2">GIOCA</div>
 </div>
 
-<!-- MODAL -->
 <div id="modal" class="modal hidden">
   <div class="modal-box">
     <p id="modal-text"></p>
@@ -244,67 +243,77 @@
 </div>
 
 <script>
-  let selectedTokens = [];
+let selectedTokens = [];
 
-  function updatePlayers(val) {
-    const n = document.getElementById("num");
-    let count = parseInt(n.innerText);
+function updatePlayers(val) {
+  const n = document.getElementById("num");
+  let count = parseInt(n.innerText);
 
-    if (count + val >= 2 && count + val <= 14) {
-      n.innerText = count + val;
+  if (count + val >= 2 && count + val <= 14) {
+    n.innerText = count + val;
 
-      while (selectedTokens.length > count + val) {
-        const removed = selectedTokens.pop();
-        document.querySelector(`.card[data-name="${removed}"]`)
-          .classList.remove("selected");
-      }
+    while (selectedTokens.length > count + val) {
+      const removed = selectedTokens.pop();
+      document.querySelector(`.card[data-name="${removed}"]`)
+        .classList.remove("selected");
     }
   }
+}
 
-  document.querySelectorAll(".card").forEach(card => {
-    card.addEventListener("click", () => {
-      const name = card.dataset.name;
-      const players = parseInt(document.getElementById("num").innerText);
-
-      if (card.classList.contains("selected")) {
-        card.classList.remove("selected");
-        selectedTokens = selectedTokens.filter(t => t !== name);
-      } else {
-        if (selectedTokens.length >= players) {
-          showModal("Numero massimo di pedine raggiunto");
-          return;
-        }
-        card.classList.add("selected");
-        selectedTokens.push(name);
-      }
-    });
-  });
-
-  function showModal(text) {
-    document.getElementById("modal-text").innerText = text;
-    document.getElementById("modal").classList.remove("hidden");
-  }
-
-  function closeModal() {
-    document.getElementById("modal").classList.add("hidden");
-  }
-
-  document.querySelector(".gioca2").addEventListener("click", () => {
+document.querySelectorAll(".card").forEach(card => {
+  card.addEventListener("click", () => {
+    const name = card.dataset.name;
     const players = parseInt(document.getElementById("num").innerText);
 
-    if (selectedTokens.length !== players) {
-      showModal("Il numero di pedine selezionate deve corrispondere al numero di giocatori");
-      return;
+    if (card.classList.contains("selected")) {
+      card.classList.remove("selected");
+      selectedTokens = selectedTokens.filter(t => t !== name);
+    } else {
+      if (selectedTokens.length >= players) {
+        showModal("Numero massimo di pedine raggiunto");
+        return;
+      }
+      card.classList.add("selected");
+      selectedTokens.push(name);
     }
-
-    localStorage.removeItem("saldi");
-
-    const datiSaldi = {};
-    selectedTokens.forEach(p => datiSaldi[p] = 1500);
-
-    localStorage.setItem("saldi", JSON.stringify(datiSaldi));
-    window.location.href = "game.html";
   });
+});
+
+function showModal(text) {
+  document.getElementById("modal-text").innerText = text;
+  document.getElementById("modal").classList.remove("hidden");
+}
+
+function closeModal() {
+  document.getElementById("modal").classList.add("hidden");
+}
+
+document.querySelector(".gioca2").addEventListener("click", () => {
+  const players = parseInt(document.getElementById("num").innerText);
+
+  if (selectedTokens.length !== players) {
+    showModal("Il numero di pedine selezionate deve corrispondere al numero di giocatori");
+    return;
+  }
+
+  localStorage.removeItem("saldi");
+
+  const datiSaldi = {};
+  selectedTokens.forEach(p => datiSaldi[p] = 1500);
+  localStorage.setItem("saldi", JSON.stringify(datiSaldi));
+
+  // ✅ SALVA DATA E ORA PARTITA
+  const now = new Date();
+  const partite = JSON.parse(localStorage.getItem("partite")) || [];
+
+  partite.push({
+    timestamp: now.getTime()
+  });
+
+  localStorage.setItem("partite", JSON.stringify(partite));
+
+  window.location.href = "game.html";
+});
 </script>
 
 </body>

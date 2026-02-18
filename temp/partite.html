@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partite</title>
+
+<style>
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  background-color: #ffffff;
+}
+
+.imp-partita {
+  width: 100%;
+  max-width: 1100px; /* PIÙ LARGO */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* HEADER */
+.header-top {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  margin: 10px 0 30px;
+}
+
+.back {
+  position: absolute;
+  left: 0;
+  top: 10px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.titol {
+  font-size: 32px;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+/* ANNO */
+.year-selector {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+
+.year-selector span {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* RETTANGOLO CERCHI */
+.grid-container {
+  background: #ededed;
+  border-radius: 25px;
+  padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(30, 1fr); /* PIÙ LARGO */
+  gap: 6px;
+  width: 100%;
+}
+
+.day {
+  width: 100%;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  background: #dcdcdc;
+}
+
+.day.past {
+  background: #6f6f6f;
+}
+
+.day.played {
+  background: #4CAF50;
+}
+
+/* LISTA PARTITE */
+.lista {
+  width: 100%;
+  margin-top: 35px;
+  font-size: 15px;
+}
+
+.lista-title {
+  font-weight: bold;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  font-size: 13px;
+}
+
+.lista-item {
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.bullet {
+  width: 6px;
+  height: 6px;
+  background: #4CAF50;
+  border-radius: 50%;
+}
+</style>
+</head>
+
+<body>
+
+<div class="imp-partita">
+
+  <div class="header-top">
+    <img class="back" src="../img/back0.svg" onclick="history.back()">
+    <div class="titol">PARTITE</div>
+  </div>
+
+  <div class="year-selector">
+    <span onclick="changeYear(-1)">&lt;</span>
+    <div id="year"></div>
+    <span onclick="changeYear(1)">&gt;</span>
+  </div>
+
+  <div id="grid" class="grid-container"></div>
+
+  <div class="lista">
+    <div class="lista-title">GIORNATE IN CUI HAI GIOCATO</div>
+    <div id="lista-content"></div>
+  </div>
+
+</div>
+
+<script>
+let currentYear = new Date().getFullYear();
+document.getElementById("year").innerText = currentYear;
+
+function isLeapYear(year) {
+  return (year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0);
+}
+
+function loadYear(year) {
+  const grid = document.getElementById("grid");
+  const lista = document.getElementById("lista-content");
+
+  grid.innerHTML = "";
+  lista.innerHTML = "";
+
+  const today = new Date();
+  const currentYearNow = today.getFullYear();
+  const totalDays = isLeapYear(year) ? 366 : 365;
+
+  const partite = JSON.parse(localStorage.getItem("partite")) || [];
+
+  const playedDates = partite
+    .map(p => new Date(p.timestamp))
+    .filter(d => d.getFullYear() === year);
+
+  for (let i = 0; i < totalDays; i++) {
+    const dayElement = document.createElement("div");
+    dayElement.classList.add("day");
+
+    const date = new Date(year, 0);
+    date.setDate(i + 1);
+
+    // ✅ LOGICA COLORI CORRETTA
+    if (year < currentYearNow) {
+      dayElement.classList.add("past"); // TUTTI SCURI
+    } else if (year === currentYearNow && date < today) {
+      dayElement.classList.add("past");
+    }
+
+    // Se giocato → verde
+    playedDates.forEach(d => {
+      if (
+        d.getDate() === date.getDate() &&
+        d.getMonth() === date.getMonth()
+      ) {
+        dayElement.classList.remove("past");
+        dayElement.classList.add("played");
+      }
+    });
+
+    grid.appendChild(dayElement);
+  }
+
+  // LISTA ESTETICA
+  playedDates
+    .sort((a,b)=>a-b)
+    .forEach(d => {
+
+      const row = document.createElement("div");
+      row.classList.add("lista-item");
+
+      const bullet = document.createElement("div");
+      bullet.classList.add("bullet");
+
+      const text = document.createElement("div");
+      text.innerText =
+        "Hai giocato il " +
+        d.toLocaleDateString("it-IT") +
+        " alle ore " +
+        d.toLocaleTimeString("it-IT", {hour:"2-digit", minute:"2-digit"});
+
+      row.appendChild(bullet);
+      row.appendChild(text);
+      lista.appendChild(row);
+    });
+}
+
+function changeYear(val) {
+  currentYear += val;
+  document.getElementById("year").innerText = currentYear;
+  loadYear(currentYear);
+}
+
+loadYear(currentYear);
+</script>
+
+</body>
+</html>
