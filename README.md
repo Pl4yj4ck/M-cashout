@@ -19,15 +19,6 @@ Perfetto per evitare errori nei conti e rendere le partite più fluide 🚀
 
 ---
 
-## 🛠️ Stato del progetto
-
-La funzione di **cronologia delle partite** è ancora in sviluppo.  
-Presto sarà possibile:
-
-- Visualizzare lo storico completo
-
----
-
 ## ▶️ Come giocare
 
 Per iniziare a usare il tracker, accedi al sito tramite il link:
