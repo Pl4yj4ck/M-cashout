@@ -15,7 +15,7 @@ Perfetto per evitare errori nei conti e rendere le partite più fluide 🚀
 - 💸 **Pagare un giocatore**
 - 💰 **Ricevere pagamenti**
 - 📊 **Visualizzare il saldo attuale**
-- 🧾 **Cronologia delle partite** *(attualmente in fase di sviluppo)*
+- 🧾 **Cronologia delle partite**
 
 ---
 
